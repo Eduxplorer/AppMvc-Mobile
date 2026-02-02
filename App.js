@@ -1,20 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import 'react-native-gesture-handler'
+import { View } from 'react-native';
+import HomeView from './src/views/HomeView'
+import LoginView from './src/views/LoginView';
+import { SafeAreaProvider } from 'react-native-safe-area-context'; // Garante responsividade com IOS
+import AppRoutes from './src/routes/AppRoutes';
+import { NavigationContainer } from '@react-navigation/native'
+
+
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <NavigationContainer>
+      <AppRoutes />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
