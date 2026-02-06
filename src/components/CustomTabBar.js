@@ -36,28 +36,27 @@ const TABS = [
         name: 'Perfil',
         icon: 'person',
         isCurrent: true,
-        route: ''
+        route: 'Login'
     }
 
 ]
 
-const TabItem = ({ item }) => {
+const TabItem = ({ item, navigation }) => {
     return (
-        <TouchableOpacity style={styles.tabButton}>
+        <TouchableOpacity style={styles.tabButton} onPress={() => navigation.navigate(item.route)}>
             <Ionicons name={`${item.icon}-outline`} size={24} color='#888' />
             <Text style={styles.tabText}>{item.name}</Text>
-
-
         </TouchableOpacity>
     );
 }
 
-export default function CustomTabBar() {
+export default function CustomTabBar({ navigation }) {
     return (
         <View style={styles.container}>
             {TABS.map(tab => (
-                <TabItem key={tab.id} item={tab} />
+                <TabItem key={tab.id} item={tab} navigation={navigation} />
             ))}
+
 
         </View>
     );
@@ -75,6 +74,11 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderTopColor: '#1c1c1c',
         paddingBottom: 5,
+        position: 'absolute',
+        bottom: 40,
+        left: 0,
+        right: 0,
+        zIndex: 1000
     },
     tabButton: {
         alignItems: 'center',
