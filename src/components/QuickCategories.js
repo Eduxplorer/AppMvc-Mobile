@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
         marginVertical: 15
     },
     title: {
+      color: '#fff',
       fontSize: 18,
       fontWeight: 'bold',
       marginLeft: 15,
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
         marginBottom: 5
     },
     itemText:{
+        color: '#fff',
         fontSize: 12
     },
 });

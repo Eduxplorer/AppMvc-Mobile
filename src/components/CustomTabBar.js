@@ -41,14 +41,27 @@ const TABS = [
 
 ]
 
-const TabItem = ({ item, navigation }) => {
-    return (
-        <TouchableOpacity style={styles.tabButton} onPress={() => navigation.navigate(item.route)}>
-            <Ionicons name={`${item.icon}-outline`} size={24} color='#888' />
-            <Text style={styles.tabText}>{item.name}</Text>
-        </TouchableOpacity>
-    );
-}
+const TabItem = ({ item, navigation }) => (
+
+    <TouchableOpacity style={styles.tabButton} onPress={() => navigation.navigate(item.route)}>
+
+        <Ionicons name={`${item.icon}-outline`} size={24} color='#888' />
+        <Text style={styles.tabText}>{item.name}</Text>
+
+    </TouchableOpacity>
+)
+
+
+// const TabItem = ({ item, navigation }) => (
+//   <TouchableOpacity style={styles.tabButton} onPress={() => navigation.navigate(item.route)}>
+
+//     <Ionicons name={`${item.icon}-outline`} size={24} color='#888' />
+
+//     <Text style={styles.tabText}>{item.name}</Text>
+//   </TouchableOpacity>
+// );
+
+
 
 export default function CustomTabBar({ navigation }) {
     return (
