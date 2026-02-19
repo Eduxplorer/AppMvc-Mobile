@@ -16,9 +16,9 @@ export default function HomeView({ navigation }) {
             <QuickCategories navigation={navigation} />
 
             {/* O isVertical é para forçar que os itens ficarão na horizontal */}
-            <GameList  title='Ofertas Top da Semana' isVertical={false} />
-
-
+        <GameList navigation={navigation} title='Ofertas top da semana' isVertical={false} />
+        <GameList navigation={navigation} title='Recomendados para você' isVertical={false} />
+        <GameList navigation={navigation} title='Recomendados para você' isVertical={false} />
 
 
             {/* Footer */}
