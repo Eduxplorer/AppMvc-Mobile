@@ -7,8 +7,10 @@ export default function LoginView({ navigation }) {
     const [senha, setSenha] = useState('');
 
     const handlerLogin = () => {
+
         console.log('E-mail: ', email);
         console.log('Senha: ', senha);
+        navigation.navigate('Home');
     }
 
     return (
