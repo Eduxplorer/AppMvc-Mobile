@@ -7,7 +7,7 @@ const TABS = [
     { id: '2', name: 'Categoria', icon: 'list', isCurrent: true, route: 'Categoria' },
     { id: '3', name: 'Desejos', icon: 'heart', isCurrent: true, route: 'Desejos' },
     { id: '4', name: 'Pedidos', icon: 'mail', isCurrent: true, route: '' },
-    { id: '5', name: 'Perfil', icon: 'person', isCurrent: true, route: 'Login' }
+    { id: '5', name: 'Perfil', icon: 'person', isCurrent: true, route: 'Perfil' }
 ]
 
 const TabItem = ({ item, navigation }) => {
