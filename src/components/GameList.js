@@ -1,17 +1,20 @@
 import { TouchableOpacity, Image, View, FlatList, StyleSheet, Text } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { useEffect, useState } from 'react';
 
-const GAMES = [
-    { id: '1', title: 'The Last Guardian', price: 'R$199', discount: '10%', rating: 4.5, image: require('../../assets/icon.png') },
-    { id: '2', title: 'Galactic Odyssey', price: 'R$199', image: require('../../assets/icon.png') },
-    { id: '3', title: 'Costroms', price: 'R$199', discount: '10%',rating: 5, image: require('../../assets/icon.png') },
-    { id: '4', title: 'Orbital Froniter', price: 'R$199', image: require('../../assets/icon.png') }
-];
+// const GAMES = [
+//     { id: '1', title: 'The Last Guardian', price: 'R$199', discount: '10%', rating: 4.5, image: require('../../assets/icon.png') },
+//     { id: '2', title: 'Galactic Odyssey', price: 'R$199', image: require('../../assets/icon.png') },
+//     { id: '3', title: 'Costroms', price: 'R$199', discount: '10%',rating: 5, image: require('../../assets/icon.png') },
+//     { id: '4', title: 'Orbital Froniter', price: 'R$199', image: require('../../assets/icon.png') }
+// ];
 
 const GameItem = ({ item, navigation }) => {
+
+    console.log(item.thumbnail)
     return (
         <TouchableOpacity onPress={() => navigation.navigate('Details')} style={styles.itemContainer}>
-            <Image source={item.image} style={styles.gameImage} />
+            <Image source={{uri: item.thumbnail}} style={styles.gameImage} />
 
             {item.discount && (
                 <View style={styles.discountContainer}>
@@ -41,13 +44,32 @@ const GameItem = ({ item, navigation }) => {
 }
 
 export default function GameList({ title, navigation }) {
+
+    const [games, setGames] = useState([]);
+
+    useEffect(() => {
+        // Faz requisição HTTP GET para uma API
+        fetch('https://www.mmobomb.com/api1/games')
+        // Converte o corpo da resposta (texto JSON) em objeto JavaScript
+        .then(res => res.json())
+         // Recebe os dados convertidos
+        .then(data => {
+             // Atualiza o estado da váriavel com os dados recebidos da API
+            setGames(data);
+
+        })
+        // Se der erro mostra no console
+        .catch(error => console.error(error));
+    }, []) // Array vazio = Só roda uma vez
+
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{title}</Text>
             <FlatList
-                data={GAMES}
+                data={games}
                 renderItem={({ item }) => <GameItem item={item} navigation={navigation} />}
-                keyExtractor={item => item.id}
+                keyExtractor={item => item.id.toString()}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.listContent}
