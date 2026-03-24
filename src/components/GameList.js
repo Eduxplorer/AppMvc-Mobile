@@ -9,12 +9,28 @@ import { useEffect, useState } from 'react';
 //     { id: '4', title: 'Orbital Froniter', price: 'R$199', image: require('../../assets/icon.png') }
 // ];
 
+// const capaComFallback = ({jogoCapa}) => {
+
+//     const [erro, setErro] = useState(false);
+//     const API_BASE_URL = "http://10.0.2.2:7079/assets/";
+//     const IMAGEM_PADRAO = "../../assets/icon.png";
+
+//     return(
+//         <Image
+//         source={ erro ? IMAGEM_PADRAO : {url: `${API_BASE_URL}${jogoCapa}`}}
+//         style={style.Image}
+//         onError={setErro(true)}
+//         resizeMode='cover'
+//         />
+//     );
+// }
+
 const GameItem = ({ item, navigation }) => {
 
-    console.log(item.thumbnail)
     return (
         <TouchableOpacity onPress={() => navigation.navigate('Details')} style={styles.itemContainer}>
-            <Image source={{uri: item.thumbnail}} style={styles.gameImage} />
+            {/* <Image source={{ uri: item.thumbnail }} style={styles.gameImage} /> */}
+            {/* <capaComFallback jogoCapa={item.jogoCapa} /> */}
 
             {item.discount && (
                 <View style={styles.discountContainer}>
@@ -26,16 +42,16 @@ const GameItem = ({ item, navigation }) => {
 
 
             <View style={styles.gamePriceContainer}>
-                <Text style={styles.gamePriceText}>{item.price}</Text>
+                <Text style={styles.gamePriceText}>{item.preco}</Text>
             </View>
-            <Text style={styles.gameTitle}>{item.title}</Text>
+            <Text style={styles.gameTitle}>{item.nome}</Text>
 
             {item.rating && (
                 <View style={styles.ratingContainer}>
                     {Array(Math.round(item.rating)).fill(0).map((_, i) => (
-                    <AntDesign key={i} name='star' size={12} color="#ffd700" />
+                        <AntDesign key={i} name='star' size={12} color="#ffd700" />
                     ))}
-                    <Text style={styles.ratingText}>{item.rating}</Text>
+                    <Text style={styles.ratingText}>{item.avaliacao}</Text>
                 </View>
             )}
 
@@ -47,21 +63,47 @@ export default function GameList({ title, navigation }) {
 
     const [games, setGames] = useState([]);
 
+    const API_URL = 'http://10.0.2.2:7079/api/Games/games';
+
+
+
+
+
+    const getGames = async () => {
+        try {
+            const response = await fetch(API_URL);
+            const json = await response.json();
+            console.log(json);
+
+            setGames(json);
+
+            console.log(json);
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getGames();
+    }, [])
+
+    /*
     useEffect(() => {
         // Faz requisição HTTP GET para uma API
         fetch('https://www.mmobomb.com/api1/games')
         // Converte o corpo da resposta (texto JSON) em objeto JavaScript
         .then(res => res.json())
-         // Recebe os dados convertidos
+        // Recebe os dados convertidos
         .then(data => {
-             // Atualiza o estado da váriavel com os dados recebidos da API
+            // Atualiza o estado da váriavel com os dados recebidos da API
             setGames(data);
-
+            
         })
         // Se der erro mostra no console
         .catch(error => console.error(error));
     }, []) // Array vazio = Só roda uma vez
-
+    */
 
     return (
         <View style={styles.container}>
@@ -69,7 +111,7 @@ export default function GameList({ title, navigation }) {
             <FlatList
                 data={games}
                 renderItem={({ item }) => <GameItem item={item} navigation={navigation} />}
-                keyExtractor={item => item.id.toString()}
+                keyExtractor={item => item.jogosId.toString()}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.listContent}
@@ -79,8 +121,8 @@ export default function GameList({ title, navigation }) {
 }
 
 const styles = StyleSheet.create({
-    container:{
-        marginBottom:30
+    container: {
+        marginBottom: 30
     },
     itemContainer: {
         width: 120,
@@ -124,22 +166,22 @@ const styles = StyleSheet.create({
         fontSize: 10,
         fontWeight: 'bold'
     },
-    ratingContainer:{
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:'space-between'
+    ratingContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
-    ratingText:{
-        color:'#fff',
+    ratingText: {
+        color: '#fff',
         fontStyle: 12,
         paddingLeft: 10
     },
-    title:{
+    title: {
         fontSize: 18,
-        fontWeight:'bold',
-        color:'#fff',
-        marginLeft:15,
-        marginBottom:10
+        fontWeight: 'bold',
+        color: '#fff',
+        marginLeft: 15,
+        marginBottom: 10
     }
 
 })
