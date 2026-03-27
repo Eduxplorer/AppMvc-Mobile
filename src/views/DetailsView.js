@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -32,15 +32,31 @@ const BANNER_IMAGE = require('../../assets/adaptive-icon.png');
 export default function DetailsView ({ route, navigation }) {
 
 
-    const { id } = route.params;
-
-    // const [jogo, setJogo] =
-
     // Desestruturação para pegar o produto enviado da tela anterior
-    const { product } = route.params;
-
+    const { id } = route.params;
+ 
     // Exibe o produto no console (debug)
-    console.log(product)
+    console.log(id)
+ 
+    const [jogo, setJogo] = useState(null);
+    const API_BASE_URL = `http://10.0.2.2:5203/api/games/${id}`;
+ 
+    const getJogo = async () => {
+        try{
+            const response = await fetch(API_BASE_URL);
+            const json = await response.json();
+            setJogo(json);
+            console.log(json);
+ 
+        }
+        catch{
+            console.log('jogo1')
+ 
+        }
+    }
+    useEffect(() => {
+        getJogo();
+    },[]);
 
     return (
 
@@ -54,7 +70,7 @@ export default function DetailsView ({ route, navigation }) {
                 {/* 2. Banner de Destaque e Nome do Jogo */}
                 <View >
                     <View style={detailsStyles.bannerContainer}>
-                        <Image source={{uri: product?.image}} style={detailsStyles.bannerImage} resizeMode="contain" />
+                        <Image source={{uri: `http://10.0.2.2:5203/assets/${jogo?.imagem}`}} style={detailsStyles.bannerImage} resizeMode="contain" />
 
                         {/* Conteúdo sobreposto */}
                         <View style={detailsStyles.bannerOverlay}>
@@ -74,7 +90,7 @@ export default function DetailsView ({ route, navigation }) {
 
                 {/* 3. Seção de Avaliação e Wishlist */}
                 <View style={detailsStyles.ratingHeader}>
-                    <Text style={detailsStyles.ratingText}>★ 9.5/5</Text>
+                    <Text style={detailsStyles.ratingText}>★ {jogo?.avaliacao}</Text>
                     <TouchableOpacity style={detailsStyles.wishlistButton}>
 
                         <MaterialCommunityIcons name="heart" size={20} color="#FFF" />
@@ -90,20 +106,14 @@ export default function DetailsView ({ route, navigation }) {
                             <MaterialCommunityIcons name="cart" size={20} color="#000" />
                             <Text style={detailsStyles.buyButtonText}>Pré-Venda Digital</Text>
                         </TouchableOpacity>
-                        <Text style={detailsStyles.priceText}>R$ {product?.price}</Text>
+                        <Text style={detailsStyles.priceText}>R$ {jogo?.preco}</Text>
                     </View>
                 </View>
-                <Text style={detailsStyles.titleGame}>Nome do Jogo {product?.title}</Text>
+                <Text style={detailsStyles.titleGame}>Nome do Jogo {jogo?.nome}</Text>
 
                 {/* 5. Descrição do Jogo */}
                 <Text style={detailsStyles.description}>
-                    {product?.description}
-                    Immerse yourself destostian funtre metrs gladiatonia, upgrade, upgrade, en deitas peslcs de aera RPG.
-                    Immerse yourself destostian funtre metrs gladiatonia, upgrade, upgrade, en deitas peslcs de aera RPG.
-                    Immerse yourself destostian funtre metrs gladiatonia, upgrade, upgrade, en deitas peslcs de aera RPG.
-                    Immerse yourself destostian funtre metrs gladiatonia, upgrade, upgrade, en deitas peslcs de aera RPG.
-                    Immerse yourself destostian funtre metrs gladiatonia, upgrade, upgrade, en deitas peslcs de aera RPG.
-
+                    {jogo?.descricao}
                 </Text>
 
                 {/* 6. Requisitos de Sistema */}

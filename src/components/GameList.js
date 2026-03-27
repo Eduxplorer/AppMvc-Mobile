@@ -35,7 +35,7 @@ const CapaComFallback = ({ jogoCapa }) => {
 const GameItem = ({ item, navigation }) => {
     return (
         <TouchableOpacity
-            onPress={() => navigation.navigate('Details', { id: item.id })}
+            onPress={() => navigation.navigate('Details', { id: item.id})}
             style={styles.itemContainer}
         >
             <CapaComFallback jogoCapa={item.jogoCapa} />
@@ -67,7 +67,7 @@ const GameItem = ({ item, navigation }) => {
 
 export default function GameList({ title, navigation }) {
     const [games, setGames] = useState([]);
-    const API_URL = 'http://10.0.2.2:5203/api/Games/games';
+    const API_URL = 'http://10.0.2.2:5203/api/games';
 
     const getGames = async () => {
         try {
