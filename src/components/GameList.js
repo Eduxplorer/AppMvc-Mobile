@@ -38,7 +38,7 @@ const GameItem = ({ item, navigation }) => {
             onPress={() => navigation.navigate('Details', { id: item.id})}
             style={styles.itemContainer}
         >
-            <CapaComFallback jogoCapa={item.jogoCapa} />
+            <CapaComFallback jogoCapa={item.imagem} />
 
             {item.discount && (
                 <View style={styles.discountContainer}>

@@ -1,16 +1,72 @@
 import { useState } from 'react';
-import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
+
+// Async Storage - Para salvar localmente no celular
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function LoginView({ navigation }) {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    const API_BASE_URL = 'http://10.0.2.2:5203/api/Account/login'
 
-    const handlerLogin = () => {
-
+    const handlerLogin = async () => {
         console.log('E-mail: ', email);
         console.log('Senha: ', senha);
-        navigation.navigate('Home');
+
+        if (!email || !senha) {
+            Alert.alert('Atenção', 'Preencha todos os campos!');
+            return 
+        }
+
+        try{
+            const response = await fetch(
+                `${API_BASE_URL}`,
+                {
+                    method: "POST",   
+                    headers: {
+                        "Content-Type": "application/json" // Tipo de conteúdo enviado 
+                    },
+                    body: JSON.stringify({
+                    email: email,
+                    passwordHash: senha
+                    })
+                }
+            );
+
+            let data;
+
+            try{
+                // Tenta converter a resposta para um objeto js
+                data = await response.json();
+            }
+            catch{
+                data = {};
+            }
+
+            if(!response.ok) {
+                Alert.alert('Erro', data?.message || "Falha no login")
+            }
+
+            console.log('Data: ', data);
+
+
+
+            if(response.ok) {
+            // Salva os dados do usuário no armazenamento local (celular)
+            // await AsyncStorage.setItem('user', JSON.stringify(data));
+
+            Alert.alert('Sucesso', 'Login realizado com sucesso!');
+                if(navigation) {
+                    navigation.navigate('Home');
+                }
+            } else {
+                Alert.alert('Erro', data?.message || 'E-mail ou senha inválida')
+            }
+        } catch(error) {
+        }
+
+
     }
 
     return (
@@ -18,19 +74,19 @@ export default function LoginView({ navigation }) {
             <View style={styles.container}>
                 <Text style={styles.title}>Login</Text>
                 <TextInput
-                value={email}
-                onChangeText={setEmail}
-                keyboardType='email-address'
-                style={styles.input} 
-                placeholder='E-mail'>
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType='email-address'
+                    style={styles.input}
+                    placeholder='E-mail'>
                 </TextInput>
 
                 <TextInput
-                value={senha}
-                onChangeText={setSenha}
-                secureTextEntry
-                style={styles.input}
-                placeholder='Senha'>
+                    value={senha}
+                    onChangeText={setSenha}
+                    secureTextEntry
+                    style={styles.input}
+                    placeholder='Senha'>
                 </TextInput>
                 <TouchableOpacity onPress={handlerLogin} style={styles.button}>
                     <Text style={styles.buttonText}>Entrar</Text>

@@ -70,7 +70,9 @@ export default function DetailsView ({ route, navigation }) {
                 {/* 2. Banner de Destaque e Nome do Jogo */}
                 <View >
                     <View style={detailsStyles.bannerContainer}>
-                        <Image source={{uri: `http://10.0.2.2:5203/assets/${jogo?.imagem}`}} style={detailsStyles.bannerImage} resizeMode="contain" />
+                        {jogo &&
+                        <Image source={{uri: `http://10.0.2.2:5203/assets/${jogo?.imagem}`}} style={detailsStyles.bannerImage} resizeMode="cover" />
+                        }
 
                         {/* Conteúdo sobreposto */}
                         <View style={detailsStyles.bannerOverlay}>

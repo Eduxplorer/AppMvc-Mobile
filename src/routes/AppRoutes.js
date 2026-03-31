@@ -24,8 +24,8 @@ export default function AppRoutes() {
 }}
         >
             {/* <Stack.Screen name="Home" component={HomeView} options={{ headerShown: false }} /> Esse bloco é utilizado para caso você desejar ocultar a barra com o nome da página que fica na parte superior */}
-            <Stack.Screen name="Home" component={HomeView} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={LoginView} options={{ title: 'Meu Login' }} />
+            <Stack.Screen name="Home" component={HomeView} options={{ headerShown: false }} />
             <Stack.Screen name="Cadastro"  component={CadastroView} options={{title: 'Cadastre-se'}} />
             <Stack.Screen name="EsqueciSenha" component={EsqueciSenhaView} options={{title: "Recuperar Conta"}} />
             <Stack.Screen name="Perfil" component={ProfileView} options={{headerShown: false}} />
