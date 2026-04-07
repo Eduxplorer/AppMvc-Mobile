@@ -38,6 +38,7 @@ export default function RegisterView({ navigation }) {
         }
 
         try {
+            setLoading(true);
             const response = await fetch(`${API_BASE_URL}`,
                 {
                     method: 'POST',
@@ -46,14 +47,29 @@ export default function RegisterView({ navigation }) {
                         nomeCompleto: nome,
                         email: email,
                         passwordHash: senha,
-                        telefone: telefone
+                        telefone: telefone || "11999993333"
                     })
 
 
                 }
-            )
-        } catch (error) {
+            );
 
+            if(response.ok){
+                Alert.alert("Sucesso", "Conta criada com sucesso!");
+                navigation.navigate('Login');
+            } else {
+                const erroData = await response.json();
+                const erroMessage = erroData.message || "Erro ao criar conta."
+                Alert.alert("Erro", erroMessage);
+            }
+
+
+        } catch (error) {
+            console.log(`Erro no cadastro`, error);
+            Alert.alert("Erro", "ocorreu um erro ao criar a conta!");
+
+        } finally { // o bloco finally roda um código indepentende do código cair no try ou catch.
+            setLoading(false);
         }
 
 
