@@ -5,15 +5,20 @@ import {
     TouchableOpacity,
     StyleSheet,
     ScrollView,
+    Alert,
 } from 'react-native';
 
-export default function RegisterView( { navigation }) {
+export default function RegisterView({ navigation }) {
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
+    const [telefone, setTelefone] = useState('');
     const [senha, setSenha] = useState('');
     const [confirmarSenha, setConfirmarSenha] = useState('');
+    const [loading, setLoading] = useState(false);
+    const API_BASE_URL = 'http://10.0.2.2:5203/api/Account/register';
 
-    const handleRegister = () => {
+
+    const handleRegister = async () => {
         console.log({
             nome,
             email,
@@ -21,6 +26,38 @@ export default function RegisterView( { navigation }) {
             confirmarSenha,
         });
         // Depois conecta com o backend
+
+        if (!nome || !email || !telefone || !senha || !confirmarSenha) {
+            Alert.alert("Atenção", "Por favor preencha todos os campos!");
+            return;
+        }
+
+        if (senha !== confirmarSenha) {
+            Alert.alert("Atenção", "As senhas não são iguais.");
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}`,
+                {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        nomeCompleto: nome,
+                        email: email,
+                        passwordHash: senha,
+                        telefone: telefone
+                    })
+
+
+                }
+            )
+        } catch (error) {
+
+        }
+
+
+
     };
 
     return (
@@ -42,6 +79,14 @@ export default function RegisterView( { navigation }) {
                 keyboardType="email-address"
                 autoCapitalize="none"
             />
+            <TextInput
+                style={styles.input}
+                placeholder="Telefone"
+                value={telefone}
+                onChangeText={setTelefone}
+                keyboardType="phone-pad"
+            />
+
 
             <TextInput
                 style={styles.input}
@@ -59,8 +104,12 @@ export default function RegisterView( { navigation }) {
                 secureTextEntry
             />
 
-            <TouchableOpacity style={styles.button} onPress={handleRegister}>
-                <Text style={styles.buttonText}>Cadastrar</Text>
+            <TouchableOpacity style={styles.button} onPress={handleRegister} disabled={loading}>
+
+                {loading ? (
+                    <Text style={styles.buttonText}>Carregando...</Text>
+                ) : (<Text style={styles.buttonText}>Cadastrar</Text>)}
+
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
